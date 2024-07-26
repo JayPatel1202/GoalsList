@@ -7,9 +7,19 @@ export default function App() {
 
 
   const [courseGoals, setCourseGoals] = useState([]);
+  const [modelIsVisible, setModelIsVisible] = useState(false);
+
+  function startAddGoalHandler() {
+    setModelIsVisible(true);
+  }
+
+  function endAddGoalHandler() {
+    setModelIsVisible(false);
+  }
 
   function addGoalHandler(enteredGoalText) {
     setCourseGoals((courseGoals) => [...courseGoals, { text: enteredGoalText, id: Math.random().toString() }]);
+    endAddGoalHandler();
   }
 
   function deleteGoalHandler(id) {
@@ -23,7 +33,8 @@ export default function App() {
 
   return (
     <View style={styles.appContainer}>
-      <GoalInput onAddGoal={addGoalHandler} />
+      <Button title='Add New Goal' color="#5e0acc" onPress={startAddGoalHandler} />
+      <GoalInput onCancel={endAddGoalHandler} onAddGoal={addGoalHandler} visible={modelIsVisible} />
       <View style={styles.goalsContainer}>
         <FlatList data={courseGoals} renderItem={(itemData) => {
           return <GoalItem
